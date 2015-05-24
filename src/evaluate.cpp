@@ -93,7 +93,7 @@ namespace {
   enum { Mobility, PawnStructure, PassedPawns, Space, KingSafety };
 
   const struct Weight { int mg, eg; } Weights[] = {
-    {289, 344}, {233, 201}, {221, 273}, {46, 0}, {322, 0}
+    {289, 344}, {233, 201}, {221, 273}, {46, 0}, {320, 0}
   };
 
   Score operator*(Score s, const Weight& w) {
@@ -198,15 +198,15 @@ namespace {
   Score KingDanger[512];
 
   // KingAttackWeights[PieceType] contains king attack weights by piece type
-  const int KingAttackWeights[PIECE_TYPE_NB] = { 0, 0, 7, 5, 4, 1 };
+  const int KingAttackWeights[PIECE_TYPE_NB] = { 0, 0, 5, 8, 4, 1 };
 
   // Penalties for enemy's safe checks
-  const int QueenContactCheck = 89;
-  const int RookContactCheck  = 71;
-  const int QueenCheck        = 50;
-  const int RookCheck         = 37;
-  const int BishopCheck       = 6;
-  const int KnightCheck       = 14;
+  const int QueenContactCheck = 91;
+  const int RookContactCheck  = 70;
+  const int QueenCheck        = 49;
+  const int RookCheck         = 36;
+  const int BishopCheck       = 10;
+  const int KnightCheck       = 13;
 
 
   // init_eval_info() initializes king bitboards for given color adding
@@ -408,9 +408,9 @@ namespace {
         // attacked and undefended squares around our king and the quality of
         // the pawn shelter (current 'score' value).
         attackUnits =  std::min(74, ei.kingAttackersCount[Them] * ei.kingAttackersWeight[Them])
-                     +  8 * ei.kingAdjacentZoneAttacksCount[Them]
+                     +  7.8 * ei.kingAdjacentZoneAttacksCount[Them]
                      + 25 * popcount<Max15>(undefended)
-                     + 11 * (ei.pinnedPieces[Us] != 0)
+                     + 10 * (ei.pinnedPieces[Us] != 0)
                      - mg_value(score) / 8
                      - !pos.count<QUEEN>(Them) * 60;
 
@@ -913,7 +913,7 @@ namespace Eval {
 
   void init() {
 
-    const int MaxSlope = 8700;
+    const int MaxSlope = 8800;
     const int Peak = 1280000;
     int t = 0;
 
